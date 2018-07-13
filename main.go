@@ -22,18 +22,14 @@ import (
 	"strconv"
 )
 
-const url = `https://msdn.itellyou.cn/`
-const cataUrl = `https://msdn.itellyou.cn/Category/Index`
-const langUrl = `https://msdn.itellyou.cn/Category/GetLang`
-const listUrl = `https://msdn.itellyou.cn/Category/GetList`
-const productUrl = `https://msdn.itellyou.cn/Category/GetProduct`
-
 func init() {
-	log.SetFlags(log.Llongfile)
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
 
 func main() {
-	log.Println("Crawling itellyou.cn...")
+	LOG_INFO("Crawling itellyou.cn...")
+
+	craw()
 	// 获取分类信息
 	catas, err := getCatasUrl(url)
 	if err != nil {
@@ -80,7 +76,7 @@ func main() {
 		}
 	}
 
-	log.Println("Craw finished.")
+	LOG_INFO("Craw finished.")
 	log.Print(catas)
 }
 
