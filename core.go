@@ -1,4 +1,19 @@
-// core.go
+/**
+ *   Copyright 2018 Guanlaolin
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+
 package main
 
 import (
@@ -10,18 +25,21 @@ import (
 	"strings"
 )
 
+// 类别
 type Cata struct {
-	Name  string // cata name
+	Name  string
 	Id    string
 	Items []Item
 }
 
+// 类别下的具体项，如Win10、Win7...
 type Item struct {
 	Name      string
 	Id        string
 	ItemLangs []ItemLanguage
 }
 
+// 每个具体项有哪些语言类别可供选择
 type ItemLanguage struct {
 	Lang     string
 	Id       string
