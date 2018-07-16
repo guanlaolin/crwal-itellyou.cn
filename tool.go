@@ -17,14 +17,48 @@
 package main
 
 import (
+	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
 func craw() {
 
+}
+
+/**
+ * Send HTTP request and unmarshal response body
+ *
+ * @param method string
+ *   http request method
+ * @param url string
+ *   http request url
+ * @param header map[string][]string
+ *	 http request header
+ * @param body string
+ * 	 http request body
+ * @param v interface{}
+ *   struct of unmarshal json
+ *
+ * @return []byte
+ *	 http response body
+ * @return error
+ * 	 error message
+ */
+func unmarshalBody(method string, url string, header map[string][]string,
+	body string, v interface{}) error {
+
+	buf, err := fetchBody(method, url, header, body)
+	if err != nil {
+		LOG_DEBUG("fetch:", err)
+		return err
+	}
+
+	return json.Unmarshal(buf, v)
 }
 
 /**
@@ -50,6 +84,7 @@ func fetchBody(method string, url string, header map[string][]string,
 	resp, err := fetch(method, url, header, body)
 	if err != nil {
 		LOG_DEBUG("fetch:", err)
+		return nil, err
 	}
 
 	return readRespBody(resp, true)
@@ -128,4 +163,13 @@ func anylazeAll(buf []byte, rule string) [][][]byte {
 	res := reg.FindAllSubmatch(buf, -1)
 
 	return res
+}
+
+func bytes2float(b []byte) float64 {
+	f, err := strconv.ParseFloat(string(b), 8)
+	if err != nil {
+		log.Fatalln("convert bytes to float error:", err)
+	}
+
+	return f
 }

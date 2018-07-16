@@ -17,7 +17,6 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 )
 
@@ -114,15 +113,8 @@ func getCatasUrl(url string) ([]Cata, error) {
 func getCataItemsUrl(url string, body string) ([]Item, error) {
 	var items []Item
 
-	buf, err := fetchBody("POST", url, header, "id="+body)
-	if err != nil {
-		LOG_DEBUG("fetchBody:", err)
-		return nil, err
-	}
-	LOG_DEBUGF("%s\n", buf)
-
-	if json.Unmarshal(buf, &items) != nil {
-		log.Print("Unmarshal:", err)
+	if err := unmarshalBody("POST", url, header, "id="+body, &items); err != nil {
+		LOG_DEBUG("unmarshalBody:", err)
 		return nil, err
 	}
 	LOG_DEBUG("%s\n", items)
@@ -133,19 +125,11 @@ func getCataItemsUrl(url string, body string) ([]Item, error) {
 func getCataItemLangsUrl(url string, body string) ([]ItemLanguage, error) {
 	var temp ItemLanguageResp
 
-	buf, err := fetchBody("POST", url, header, "id="+body)
-	if err != nil {
-		log.Print("fetchBody:", err)
+	if err := unmarshalBody("POST", url, header, "id="+body, &temp); err != nil {
+		LOG_DEBUG("unmarshalBody:", err)
 		return nil, err
 	}
-	LOG_DEBUGF("%s\n", buf)
-
-	err = json.Unmarshal(buf, &temp)
-	if err != nil {
-		log.Print("Unmarshal:", err)
-		return nil, err
-	}
-	//log.Println(temp)
+	LOG_DEBUG("%s\n", temp)
 
 	return temp.Result, nil
 }
@@ -153,18 +137,11 @@ func getCataItemLangsUrl(url string, body string) ([]ItemLanguage, error) {
 func getCataItemLangListsUrl(url string, body string) ([]ItemSummary, error) {
 	var temp ItemSummaryResp
 
-	buf, err := fetchBody("POST", url, header, "id="+body)
-	if err != nil {
-		log.Print("fetchBody:", err)
+	if err := unmarshalBody("POST", url, header, "id="+body, &temp); err != nil {
+		LOG_DEBUG("unmarshalBody:", err)
 		return nil, err
 	}
-	LOG_DEBUGF("%s\n", buf)
-
-	if json.Unmarshal(buf, &temp) != nil {
-		log.Print("Unmarshal:", err)
-		return nil, err
-	}
-	//log.Printf("%s\n", temp)
+	LOG_DEBUG("%s\n", temp)
 
 	return temp.Result, nil
 }
@@ -172,19 +149,11 @@ func getCataItemLangListsUrl(url string, body string) ([]ItemSummary, error) {
 func getCataItemLangListDetail(url string, body string) (ItemDetail, error) {
 	var temp ItemDetailResp
 
-	buf, err := fetchBody("POST", url, header, "id="+body)
-	if err != nil {
-		log.Print("fetchBody:", err)
+	if err := unmarshalBody("POST", url, header, "id="+body, &temp); err != nil {
+		LOG_DEBUG("unmarshalBody:", err)
 		return ItemDetail{}, err
 	}
-	LOG_DEBUGF("%s\n", buf)
-
-	err = json.Unmarshal(buf, &temp)
-	if err != nil {
-		log.Print("Unmarshal:", err)
-		return ItemDetail{}, err
-	}
-	//log.Printf("%s\n", temp)
+	LOG_DEBUG("%s\n", temp)
 
 	return temp.Result, nil
 }

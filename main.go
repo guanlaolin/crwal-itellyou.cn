@@ -19,7 +19,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strconv"
 )
 
 func init() {
@@ -78,13 +77,4 @@ func main() {
 
 	LOG_INFO("Craw finished.")
 	log.Print(catas)
-}
-
-func bytes2float(b []byte) float64 {
-	f, err := strconv.ParseFloat(string(b), 8)
-	if err != nil {
-		log.Fatalln("convert bytes to float error:", err)
-	}
-
-	return f
 }
